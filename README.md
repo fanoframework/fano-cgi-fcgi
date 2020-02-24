@@ -23,17 +23,15 @@ $ ./tools/config.setup.sh
 $ ./build.sh
 ```
 
-If you have Fano CLI installed, you can setup virtual host configuration by running
+If you have Fano CLI installed, you can setup virtual host configuration as FastCGI using mod_fcgid module by running
 
 ```
 $ sudo fanocli --deploy-cgid=cgi-fcgi.fano
 ```
-to deploy using mod_fcgid to run as FastCGI application or
-
+or as CGI application
 ```
 $ sudo fanocli --deploy-cgi=cgi-fcgi.fano
 ```
-to deploy as CGI application
 
 Please read [Deploy as FastCGI application](https://doc.fano.web.id/deployment/fastcgi/) or  [Deploy as CGI application](https://doc.fano.web.id/deployment/cgi/) from Fano Framework documentation for more information.
 
