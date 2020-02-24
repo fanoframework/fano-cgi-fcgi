@@ -13,16 +13,16 @@ uses
     bootstrap;
 
 var
-    appInstance : IWebApplication;
+    appInstance, fcgiApp, cgiApp : IWebApplication;
 
 begin
 
     (*!-----------------------------------------------
-     * Bootstrap Fast CGI application
+     * Bootstrap CGI Fast CGI gateway application
      *
      * @author AUTHOR_NAME <author@email.tld>
      *------------------------------------------------*)
-    appInstance := TDaemonWebApplication.create(
+    fcgiApp := TDaemonWebApplication.create(
         TFastCgiAppServiceProvider.create(
             TServerAppServiceProvider.create(
                 TAppServiceProvider.create(),
@@ -31,5 +31,12 @@ begin
         ),
         TAppRoutes.create()
     );
+
+    cgiApp := TCgiWebApplication.create(
+        TAppServiceProvider.create(),
+        TAppRoutes.create()
+    );
+
+    appInstance := TCgiFcgiGatewayApplication.create(cgiApp, fcgiApp);
     appInstance.run();
 end.
