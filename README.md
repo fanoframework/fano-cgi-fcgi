@@ -1,6 +1,7 @@
-# Fano Web Framework Skeleton Application
+# Fano CGI FastCGI web application
 
-Web application skeleton using Fano Framework, Pascal web application framework
+Example FastCGI web application using Fano Framework, Pascal web application framework.
+It will fallback to CGI application when FastCGI is not supported.
 
 This project is generated using [Fano CLI](https://github.com/fanoframework/fano-cli)
 command line tools to help scaffolding web application using Fano Framework.
@@ -8,35 +9,37 @@ command line tools to help scaffolding web application using Fano Framework.
 ## Requirement
 
 - [Free Pascal](https://www.freepascal.org/) >= 3.0
-- [libcurl development](https://curl.haxx.se/libcurl/)
-- Web Server (Apache, nginx)
+- Web Server (Apache)
+- mod_fcgid or mod_cgi
 - [Fano Web Framework](https://github.com/fanoframework/fano)
 
 ## Installation
 
-### Build
-
-#### libcurl development package installation
-
-Check if libcurl package for development is installed by running `curl-config`.
+### TL;DR
 
 ```
-$ curl-config --version
-```
-If libcurl installed you will get something like `libcurl x.xx.x` where `x.xx.x` is version. For example `libcurl 7.47.0` otherwise you get
-
-```
-The program 'curl-config' can be found in the following packages:
- * libcurl4-gnutls-dev
- * libcurl4-nss-dev
- * libcurl4-openssl-dev
-Try: sudo apt install <selected package>
+$ git clone git@github.com:fanofamework/fano-cgi-fcgi.git --recursive
+$ ./tools/config.setup.sh
+$ ./build.sh
 ```
 
-In case libcurl not installed, run
+If you have Fano CLI installed, you can setup virtual host configuration by running
+
 ```
-$ sudo apt install libcurl4-gnutls-dev
+$ sudo fanocli --deploy-cgid=cgi-fcgi.fano
 ```
+to deploy using mod_fcgid to run as FastCGI application or
+
+```
+$ sudo fanocli --deploy-cgi=cgi-fcgi.fano
+```
+to deploy as CGI application
+
+Please read [Deploy as FastCGI application](https://doc.fano.web.id/deployment/fastcgi/) or  [Deploy as CGI application](https://doc.fano.web.id/deployment/cgi/) from Fano Framework documentation for more information.
+
+If you do not have Fano CLI installed, you need to setup virtual host manually as shown in *Run with a Web Server* section of this document.
+
+Open Internet browser and go to URL http://cgi-fcgi.fano.
 
 ### Free Pascal installation
 
@@ -48,7 +51,7 @@ If you see something like `Free Pascal Compiler version 3.0.4`,  you are good to
 
 Clone this repository
 
-    $ git clone git@github.com:fanofamework/fano-app.git --recursive
+    $ git clone git@github.com:fanofamework/fano-cgi-fcgi.git --recursive
 
 `--recursive` is needed so git also pull [Fano](https://github.com/fanoframework/fano) repository.
 
@@ -147,6 +150,11 @@ For example, on Debian, this will enable `mod_cgi` module.
 ```
 $ sudo a2enmod cgi
 $ sudo systemctl restart apache2
+```
+To deploy as FastCGI, replace `AddHandler` line above with
+
+```
+AddHandler fcgid-script .cgi
 ```
 
 Depending on your server setup, for example, if  you use `.htaccess`, add following code:
